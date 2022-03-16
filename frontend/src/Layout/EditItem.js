@@ -52,7 +52,7 @@ function EditItem() {
     event.preventDefault();
     const updatedItem = {
       ...form,
-      item_id: currentItem.item_id
+      item_id: currentItem.item_id  
     };
     console.log(currentItem)
     updatedItem.quantity = Number(updatedItem.quantity);
