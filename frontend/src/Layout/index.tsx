@@ -10,10 +10,10 @@ function Layout() {
     <>
       <div className="container">
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/items/new" element={<AddItem />} />
-          <Route exact path="/items/:itemId" element={<Item />} />
-          <Route exact path="/items/:itemId/edit" element={<EditItem />} />
+          <Route  path="/" element={<Home />} />
+          <Route  path="/items/new" element={<AddItem />} />
+          <Route  path="/items/:itemId" element={<Item />} />
+          <Route  path="/items/:itemId/edit" element={<EditItem />} />
         </Routes>
       </div>
     </>

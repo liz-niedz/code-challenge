@@ -1,9 +1,12 @@
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:5001";
+import { ItemType } from "../../Layout/Item";
+
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
-
-async function fetchJson(url, options, onCancel) {
+type FetchJsonOptions = Record<string, unknown>;
+type FetchJsonOnCancel = ()=>unknown;
+async function fetchJson(url:string, options:FetchJsonOptions, onCancel?:FetchJsonOnCancel) {
   try {
     const response = await fetch(url, options);
 
@@ -17,7 +20,7 @@ async function fetchJson(url, options, onCancel) {
       return Promise.reject({ message: payload.error });
     }
     return payload.data;
-  } catch (error) {
+  } catch (error: any) {
     if (error.name !== "AbortError") {
       console.error(error.stack);
       throw error;
@@ -26,17 +29,17 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
-export async function readItem(item_id, signal) {
+export async function readItem(item_id: any, signal: any) {
   const url = `${API_BASE_URL}/items/${item_id}`;
-  return await fetchJson(url, { signal }, {});
+  return await fetchJson(url, { signal }) as Promise<ItemType>;
 }
 
-export async function listItems(signal) {
+export async function listItems(signal: any) {
   const url = `${API_BASE_URL}/items`;
-  return await fetchJson(url, { signal }, []);
+  return await fetchJson(url, { signal });
 }
 
-export async function createItem(item, signal) {
+export async function createItem(item: any, signal: any) {
   const url = `${API_BASE_URL}/items`;
   const options = {
     method: "POST",
@@ -44,10 +47,10 @@ export async function createItem(item, signal) {
     body: JSON.stringify({ data: item }),
     signal,
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options);
 }
 
-export async function updateItem(updatedItem, signal) {
+export async function updateItem(updatedItem: any, signal: any) {
   console.log(updatedItem)
   const url = `${API_BASE_URL}/items/${updatedItem.item_id}`;
   const options = {
@@ -58,7 +61,7 @@ export async function updateItem(updatedItem, signal) {
   return await fetchJson(url, options, updatedItem);
 }
 
-export async function deleteItem(itemId, signal) {
+export async function deleteItem(itemId: any, signal: any) {
   const url = `${API_BASE_URL}/items/${itemId}`;
   const options = { method: "DELETE", signal };
   return await fetchJson(url, options);

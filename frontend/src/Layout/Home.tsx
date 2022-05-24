@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { listItems } from "../utils/api";
 import ListItems from "./ListItems";
+import { EuiButton } from '@elastic/eui'
 
 function Home() {
   const [items, setItems] = useState([]);
@@ -19,13 +20,13 @@ function Home() {
   return (
     <>
     <div>
-      <button
-        type="button"
-        className="btn btn-primary"
+      <EuiButton
+        color="primary"
+        fill
         onClick={() => navigate("/items/new")}
       >
         + Create Item
-      </button>
+      </EuiButton>
       </div>
       <ListItems items={items} />
     </>

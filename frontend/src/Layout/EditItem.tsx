@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateItem, listItems } from "../utils/api";
 import ItemForm from "./ItemForm";
+import { EuiButton, EuiFieldText, EuiFormRow, EuiForm, EuiFlexItem, EuiFlexGroup, EuiBreadcrumbs, EuiBreadcrumb} from '@elastic/eui';
+import { ItemType } from "./Item"
+
 
 function EditItem() {
-  const initialForm = {
+  const initialForm: ItemType = {
+    item_id: "undefined",
     item_name: "",
     item_description: "",
     quantity: "",
-    date_added: "",
-    time_added: "",
+    date_added: new Date(Date.now()),
+    time_added: "4:43 pm",
   };
   const [form, setForm] = useState(initialForm);
   const params = useParams();
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
-  const [currentItem, setCurrentItem] = useState({});
+  const [currentItem, setCurrentItem] = useState<ItemType>();
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -31,8 +35,8 @@ function EditItem() {
 
   useEffect(() => {
     if (items.length > 0) {
-      const current = items.find(
-        (item) => item.item_id === Number(params.item_id)
+      const current: any = items.find(
+        (item: any) => item.item_id === Number(params.item_id)
       );
       current.date_added = current.date_added.slice(0,10)
       setCurrentItem(current);
@@ -41,34 +45,36 @@ function EditItem() {
   }, [items, params]);
   
 
-  function changeHandler({ target: { name, value } }) {
+  function handleChange({ target: { name, value } }: any) {
     setForm((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
+    const abortController = new AbortController();
     event.preventDefault();
+    if(typeof currentItem === 'undefined') {
+      return;
+    }
     const updatedItem = {
       ...form,
       item_id: currentItem.item_id  
     };
-    console.log(currentItem)
     updatedItem.quantity = Number(updatedItem.quantity);
-    updateItem(updatedItem).then(() => {
+    updateItem(updatedItem, abortController.signal).then(() => {
       navigate("/");
     });
   };
 
   return (
     <>
-      <h2>Edit Item:</h2>
       <ItemForm
         newItem={form}
         setNewItem={setForm}
         handleSubmit={handleSubmit}
-        changeHandler={changeHandler}
+        handleChange={handleChange}
       />
     </>
   );
