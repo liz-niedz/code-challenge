@@ -1,4 +1,4 @@
-const knex = require("../db/connection");
+import knex from '../db/connection';
 
 function read(item_id) {
   return knex("items").select("*").where({ item_id }).first();
@@ -27,7 +27,7 @@ function destroy(item_id) {
   return knex("items").where({ item_id }).del();
 }
 
-module.exports = {
+export default {
   read,
   list,
   create,

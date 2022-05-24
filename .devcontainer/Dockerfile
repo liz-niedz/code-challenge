@@ -2,7 +2,7 @@
 ARG VARIANT=16-bullseye
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
-ENV API_BASE_URL=http://localhost:5001
+ENV API_BASE_URL=http://localhost:8080
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \

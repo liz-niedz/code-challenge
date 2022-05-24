@@ -1,5 +1,7 @@
-const service = require("./items.service");
-const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+import service from './items.service';
+import asyncErrorBoundary from '../errors/asyncErrorBoundary';
+
+
 
 async function itemExists(req, res, next) {
   const item = await service.read(req.params.item_id);
@@ -41,7 +43,7 @@ async function destroy(req, res) {
   res.sendStatus(204);
 }
 
-module.exports = {
+export default {
   create: [asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(itemExists), asyncErrorBoundary(read)],
   update: [asyncErrorBoundary(itemExists), asyncErrorBoundary(update)],
